@@ -6,6 +6,8 @@ const aptos = require('aptos');
 let bodyParser = require('body-parser');
 let urlEncodedParser = bodyParser.urlencoded({ extended: false});
 const client = new aptos.AptosClient("https://fullnode.random.aptoslabs.com");
+let { Account, Aptos, AptosConfig, Network, NetworkToNetworkName } = require("@aptos-labs/ts-sdk");
+
 const a1 = {
     address: "0x1eeeda849696ed6815698f1c9694c730fa338a992def90d4b89963f4994df0d4",
     publicKeyHex: "0x76b006eb383612166b354a5a8b4979c13a805ea33cc86ae7d4a97faba5c38eee",
@@ -18,6 +20,27 @@ const payload = {
   type_arguments:[],
     arguments: [],
 };
+let x = 100 
+const collectionName = "GeoTagNFT";
+const collectionDescription = "Geo Tag NFT minted and placed at random location of the user";
+const collectionURI = "/geotagnft";
+const tokenName = "Voucher NFT"+x;
+const tokenDescription = "Could be reedmed in physical shops.";
+const tokenURI = "/cryptorunner.rand";
+
+  async function createAndSignCollection() {
+    // Create the collection
+    x=x+1
+    const tokenmaker = new aptos.TokenClient(client)
+   const gettokencoll=await tokenmaker.getCollectionData(account1.address(),collectionName)
+  
+   const minttokentransaction = await tokenmaker.createToken(account1,collectionName,tokenName,tokenDescription,1,tokenURI)
+    
+    return (minttokentransaction)
+}
+  
+  // Call the async function
+  
 
 app.get('/genrandloc', async (req, res) =>{
 
@@ -27,20 +50,9 @@ app.get('/genrandloc', async (req, res) =>{
 
 app.get('/mint',urlEncodedParser, async (req, res) => {
     
-    const payloadmint = {
-        type: "entry_function_payload",
-        function: "0x1eeeda849696ed6815698f1c9694c730fa338a992def90d4b89963f4994df0d4::geotagrandnft::mint_geo_token",
-        type_arguments: [],
-        arguments: [],
-    };
-
-    const txnRequest = await client.generateTransaction(account1.address(), payloadmint);
-    const signedTxn = await client.signTransaction(account1, txnRequest);
-    //console.log(signedTxn);
-    const transactionRes = await client.submitTransaction(signedTxn);
-    await client.waitForTransaction(transactionRes.hash);
+    transactionRes = await createAndSignCollection();
     console.log(transactionRes)
-    res.send("Coin Mint!" +transactionRes.hash.toString());
+    res.send("Coin Mint!" +transactionRes.toString());
     // res.end(JSON.stringify(transactionRes));
 })
 
