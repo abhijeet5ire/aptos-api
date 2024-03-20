@@ -6,7 +6,6 @@ const aptos = require('aptos');
 let bodyParser = require('body-parser');
 let urlEncodedParser = bodyParser.urlencoded({ extended: false});
 const client = new aptos.AptosClient("https://fullnode.random.aptoslabs.com");
-let { Account, Aptos, AptosConfig, Network, NetworkToNetworkName } = require("@aptos-labs/ts-sdk");
 
 const a1 = {
     address: "0x1eeeda849696ed6815698f1c9694c730fa338a992def90d4b89963f4994df0d4",
