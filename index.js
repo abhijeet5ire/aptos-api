@@ -19,7 +19,7 @@ const payload = {
   type_arguments:[],
     arguments: [],
 };
-let x = 100 
+let x = 300 
 const collectionName = "GeoTagNFT";
 const collectionDescription = "Geo Tag NFT minted and placed at random location of the user";
 const collectionURI = "/geotagnft";
@@ -30,6 +30,7 @@ const tokenURI = "/cryptorunner.rand";
   async function createAndSignCollection() {
     // Create the collection
     x=x+1
+    const tokenName = "Voucher NFT"+x;
     const tokenmaker = new aptos.TokenClient(client)
    const gettokencoll=await tokenmaker.getCollectionData(account1.address(),collectionName)
   
